@@ -1,15 +1,4 @@
-{
-  "DESCRIPTION": {
-    "P_ZONE": "지역",
-    "LATITUDE": "Y좌표(WGS84)",
-    "MAIN_EQUIP": "주요시설",
-    "P_PARK": "공원명",
-    "P_IMG": "이미지",
-    "LONGITUDE": "X좌표(WGS84)",
-    "P_ADDR": "공원주소",
-    "P_IDX": "연번",
-  },
-  "DATA": [
+[
     {
       "p_addr": "서울특별시 중구 삼일대로 231(예장동)",
       "p_zone": "중구",
@@ -1331,4 +1320,3 @@
       "latitude": null
     }
   ]
-}
