@@ -16,17 +16,17 @@
 
 # 2. 사용 기술
 
-* Front-end
-* *Jquery
-* *AJAX
-* *Bulma
-* *Boostrap
+#####Front-end
+*Jquery
+*AJAX
+*Bulma
+**Boostrap
 
-*Back-end
+#####Back-end
 **Flask
 **MongoDB
 
-*Deploy
+#####Deploy
 **AWS EC2
 
 
