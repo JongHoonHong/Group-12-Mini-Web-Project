@@ -16,35 +16,33 @@
 
 # 2. 사용 기술
 
-#####Front-end
+##### Front-end
 *Jquery
 *AJAX
 *Bulma
 **Boostrap
 
-#####Back-end
-**Flask
-**MongoDB
+##### Back-end
+*Flask
+*MongoDB
 
-#####Deploy
-**AWS EC2
+##### Deploy
+*AWS EC2
 
 
-Back-end
-python 3
-Flask (python frame work)
-MongoDB
-Front-end
-bootstrap
-bulma
-JQuery
-AJAX
-Deploy
-AWS EC2
 
 ------------
 
 # 3. 핵심 기능
+
+##### 회원가입 및 로그인
+* 회원가입시 중복된 아이디가 있는지 확인합니다.
+* JWT를 이용하여 로그인과 회원가입을 구현했습니다.
+
+
+##### 네이버 지도 기능
+* 네이버 지도 API를 사용하여 상세페이제에서 해당 공원의 위치를 확인학 수 있게 구현했습니다.
+
 
 ------------
 
