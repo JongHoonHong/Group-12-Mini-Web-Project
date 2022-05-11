@@ -7,27 +7,27 @@
 # 1. 제작기간 & 팀원 소개
 - 2022/05/19~05/13 (4일간 진행)
 - 팀원(4인)  
-홍종훈(팀장) :  
-최성우 :  리뷰페이지 구현, DB관리
-이담 :  메인페이지 구현, DB관리
-이효리 :  회원가입 로그인 기능구현, DB관리
+ 홍종훈(팀장) : 
+ 최성우 :  리뷰페이지 구현, DB관리
+ 이담 :  메인페이지 구현, DB관리
+ 이효리 :  회원가입 로그인 기능구현, DB관리
 
 ------------
 
 # 2. 사용 기술
 
 ##### Front-end
-*Jquery
-*AJAX
-*Bulma
-**Boostrap
+* Jquery
+* AJAX
+* Bulma
+* *Boostrap
 
 ##### Back-end
-*Flask
-*MongoDB
+* Flask
+* MongoDB
 
 ##### Deploy
-*AWS EC2
+* AWS EC2
 
 
 
