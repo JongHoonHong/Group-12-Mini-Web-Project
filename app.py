@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import jwt
 import datetime
 import hashlib
+import json
 from flask import Flask, render_template, jsonify, request, redirect, url_for
 from werkzeug.utils import secure_filename
 from datetime import datetime, timedelta
@@ -17,7 +18,8 @@ app.config['UPLOAD_FOLDER'] = "./static/profile_pics"
 SECRET_KEY = 'SPARTA'
 
 ca = certifi.where()
-client = MongoClient('mongodb+srv://test:sparta@cluster0.ovpfg.mongodb.net/Cluster0?retryWrites=true&w=majority', tlsCAFile=ca)
+client = MongoClient('mongodb+srv://test:sparta@cluster0.ovpfg.mongodb.net/Cluster0?retryWrites=true&w=majority',
+                     tlsCAFile=ca)
 db = client.Group12
 
 
@@ -65,8 +67,8 @@ def sign_in():
 
     if result is not None:
         payload = {
-         'id': username_receive,
-         'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
+            'id': username_receive,
+            'exp': datetime.utcnow() + timedelta(seconds=60 * 60 * 24)  # 로그인 24시간 유지
         }
         token = jwt.encode(payload, SECRET_KEY, algorithm='HS256')
 
@@ -100,55 +102,84 @@ def check_dup():
     return jsonify({'result': 'success', 'exists': exists})
 
 
-@app.route('/update_profile', methods=['POST'])
-def save_img():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 프로필 업데이트
-        return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+# @app.route('/update_profile', methods=['POST'])
+# def save_img():
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         # 프로필 업데이트
+#         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("home"))
 
 
-@app.route('/posting', methods=['POST'])
-def posting():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 포스팅하기
-        return jsonify({"result": "success", 'msg': '포스팅 성공'})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+# @app.route('/posting', methods=['POST'])
+# def posting():
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         # 포스팅하기
+#         return jsonify({"result": "success", 'msg': '포스팅 성공'})
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("home"))
 
 
-@app.route("/get_posts", methods=['GET'])
-def get_posts():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 포스팅 목록 받아오기
-        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다."})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+# @app.route("/get_posts", methods=['GET'])
+# def get_posts():
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         # 포스팅 목록 받아오기
+#         return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다."})
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("home"))
 
 
-@app.route('/update_like', methods=['POST'])
-def update_like():
-    token_receive = request.cookies.get('mytoken')
-    try:
-        payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 좋아요 수 변경
-        return jsonify({"result": "success", 'msg': 'updated'})
-    except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
-        return redirect(url_for("home"))
+# @app.route('/update_like', methods=['POST'])
+# def update_like():
+#     token_receive = request.cookies.get('mytoken')
+#     try:
+#         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
+#         # 좋아요 수 변경
+#         return jsonify({"result": "success", 'msg': 'updated'})
+#     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#         return redirect(url_for("home"))
+
+# 공원 정보 받아오기1
+@app.route("/get_park", methods=['GET'])
+def get_park():
+    # 전체 db Get
+    posts = list(db.park_info.find({}, {'_id': False}))
+    # 성공 시 실행되는 메세지
+    return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", 'posts': posts})
+
+# @app.route("/post_park", methods=['POST'])
+# def post_park():
+#     # 전체 db Get
+#     posts = list(db.park_info.find({}, {'_id': False}))
+#     # 성공 시 실행되는 메세지
+#     return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", 'posts': posts})
+
+@app.route("/detail/<title>")
+def detail(title):
+    detailPark = db.park_info.find_one({"p_park":title}, {'_id': False})
+    return render_template('detail.html', detailPark=detailPark)
 
 
-# 구카테고리 받아오기
-@app.route("/park_info", methods=["GET"])
-def get_gulist():
-    gu_list = list(db.park_info.find({}, {'_id':False}))
-    return jsonify({'gulist': gu_list})
+# try:
+#     # 포스팅 목록 받아오기
+#     posts = list(db.park_info.find({}))
+#     print(posts)
+#     for post in posts:
+#         # 문자열로 변경
+#         post["_id"] = str(post["_id"])
+#     # 성공 시 실행되는 메세지
+#     return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", 'posts': posts})
+# # 예외처리하기
+# except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
+#     # url 재전송하기
+#     return redirect(url_for("home"))
+
 
 if __name__ == '__main__':
-    app.run('0.0.0.0', port=5000, debug=True)
+    app.run('0.0.0.0', port=5001, debug=True)

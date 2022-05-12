@@ -32,6 +32,7 @@
             background-color: rgb(74, 112, 87);
             min-height: 100vh;
         }
+
         .wrap {
             width: 90%;
             max-width: 750px;
@@ -63,17 +64,12 @@
             display: inline;
         }
 
-        .card {
+        .mycards {
             width: 50%;
             height: 50vh;
             margin: 10px auto 10px auto;
-            border: 1px solid black;
-            border-radius: 5px;
             float: left;
-        }
 
-        .card-body {
-            overflow: auto;
         }
 
         .card-title {
@@ -84,22 +80,18 @@
             font-size: 14px;
             letter-spacing: -2px;
             margin: 0;
+            height:150px;
+            overflow:scroll
         }
 
 
         #map {
-            width: 60%;
+            width: 50%;
             height: 50vh;
             margin: 10px auto 10px auto;
             float: right;
             border-radius: 5px;
             border: 1px solid black;
-        }
-
-        .btn-sparta {
-            color: #fff;
-            background-color: #e8344e;
-            border-color: #e8344e;
         }
 
         .iw-inner {
@@ -117,54 +109,28 @@
 
     </style>
     <script>
-        let y_cen = 37.5501402;   // latitutde
-        let x_cen = 126.9903773;  // longitude
         let map;
         let markers = [];
         let infowindows = [];
         $(document).ready(function () {
             map = new naver.maps.Map('map', {
-                center: new naver.maps.LatLng(y_cen, x_cen),
-                zoom: 12,
+                center: new naver.maps.LatLng({{ detailPark.latitude }}, {{ detailPark.longitude }}),
+                zoom: 15,
                 zoomControl: true,
                 zoomControlOptions: {
                     style: naver.maps.ZoomControlStyle.SMALL,
                     position: naver.maps.Position.TOP_RIGHT
                 }
             });
-
-            get_park_info()
+            let marker = make_marker()
+            add_info(marker)
         });
 
-        function get_park_info() {
-            for (let i = 0; i < markers.length; i++) {
-                markers[i].setMap(null);
-                infowindows[i].close()
-            }
-            markers = [];
-            infowindows = [];
 
-            $.ajax({
-                type: "GET",
-                url: `/park_info`,
-                data: {},
-                success: function (response) {
-                    let parks = response["park_info_list"];
-                    console.log(parks.length);
-                    for (let i = 0; i < parks.length; i++) {
-                        let park = parks[i];
-                        make_card(i, parks);
-                        let marker = make_marker(park);
-                        add_info(i, marker, park)
-                    }
-                }
-            });
-        }
-
-        function make_marker(park) {
+        function make_marker() {
             let marker_img = '{{ url_for("static", filename="marker-default.png") }}';
             let marker = new naver.maps.Marker({
-                position: new naver.maps.LatLng(park["latitude"], park["longitude"]),
+                position: new naver.maps.LatLng({{ detailPark.latitude }}, {{ detailPark.longitude }}),
                 map: map,
                 icon: marker_img
             });
@@ -172,23 +138,10 @@
             return marker
         }
 
-        function make_card(i, park) {
-            let html_temp = `<div class="card" id="card-${i}">
-                                    <div class="card-body">
-                                        <h5 class="card-title"><a href="javascript:click2center(${i})" class="matjip-title">${park['p_park']}</a></h5>
-                                        <h6 class="card-subtitle mb-2 text-muted">${park['p_zone']}</h6>
-                                        <i class="fa fa-bookmark" onclick="bookmark('${park['p_park']}', '${park['p_addr']}')"></i>
-                                        <p class="card-text">${park['p_addr']}</p>
-                                        <p class="card-text" style="color:blue;">${park['main_equip']}</p>
-                                    </div>
-                                 </div>`;
-
-        }
-
-        function add_info(i, marker, matjip) {
+        function add_info(marker) {
             let html_temp = `<div class="iw-inner">
-                                    <h5>${park['p_park']}</h5>
-                                    <p>${park['p_addr']}
+                                    <h5>{{ detailPark.p_park }}</h5>
+                                    <p>{{ detailPark.p_addr }}
                                     </div>`;
             let infowindow = new naver.maps.InfoWindow({
                 content: html_temp,
@@ -213,54 +166,32 @@
             });
         }
 
-        function click2center(i) {
-            let marker = markers[i];
-            let infowindow = infowindows[i];
-            if (infowindow.getMap()) {
-                infowindow.close();
-            } else {
-                infowindow.open(map, marker);
-                map.setCenter(infowindow.position)
-            }
-        }
-
     </script>
 
 </head>
 
 <body>
 <div class="wrap">
-    <div class="banner">
+    <div class="banner" id="banner">
         <div class="d-flex flex-column align-items-center"
              style="background-color: rgba(0,0,0,0.5);width: 100%;height: 100%;">
-<!--            p_park-->
-            <h1 class="title mt-5 mb-2">${park['p_park']}</h1>
-            <button type="button" onclick="get_park_info()" class="btn btn-sparta">
-                리뷰작성하기
-            </button>
+            <!--            p_park-->
+            <h1 class="title mt-5 mb-2">{{ detailPark.p_park }}</h1>
         </div>
     </div>
-    <div class="card" style="width: 18rem;">
-        <!--    공원 이미지 p_img-->
-        <img src="http://parks.seoul.go.kr/file/info/view.do?fIdx=1884" class="card-img-top" alt="...">
-        <div class="card-body">
-            <!--            공원 주소 p_addr-->
-            <h5 class="card-title">서울특별시 중구 삼일대로 231(예장동)</h5>
-            <!--       주요 장비 main_equip    -->
-            <p class="card-text">奉恩寺 도심 한가운데 있는 奉恩寺는 그 외형적 규모뿐 아니라 역사적으로 서울의 대표적인 사찰로 알려져 있다. 일제시대에는 서울과 경기 일원의 80여 사찰을
-                관장하던 본사였고 조선시대에는 억불정책에도 불구하고 선종의 수사찰(首寺刹)로 한국불교의 명맥을 유지하는데 결정적 공헌을 해온 곳이다. 선불당(選佛堂) 봉은사 대웅전 한단 아래 왼쪽에
-                자리잡고 있는 선불당은 대중을 위한 禪房으로1941년 심검당이 있던 자리에 중건된 것이다. 선불당은 계율을 일러주는 곳 혹은 선법.교법을 닦는 곳이다. 秋史 金正喜의 '板殿' 현판
-                (서울시 유형문화재 제76호: 1991년 5월28일 지정) 봉은사에 있는 화엄경소를 비롯한 15종 3438매의 많은 목판본을 보관하기 위하여 세워진 전각인 판전의 정면 어칸의 처마에 걸려
-                있는 편액이다. 이 편액은 추사 김정희(1786~1856?)의 말년 작품으로 왼쪽에 세로로 '칠십일과병중작(칠십일과병중작)'이라 쓰여진 바와 같이 그가 71세때 병중에 쓴 글씨로
-                유명하다. 대방광불화엄경(大方廣佛華嚴經) 수소연의 초판 (서울시 유형문화재 제84호: 1992년 12월28일 지정) 봉은사 판전에 보관되어 있는 총 15종 3438판의 목판본 중
-                3133판이 바로 대방광불화엄경이다. 대승불교의 대표적 경전이라 할 수 있는 이 화엄경판은 처음 중국 당나라의 실차난타와 징관이 각각 번역하고 찬한 것으로 흔히 '화엄경'으로 줄여
-                부른다. 주된 내용은 부처님이 성도한 깨달음의 내용을 그대로 나타내고 있는 경전으로 여러 대승불교의 경전 가운데서도 교학적.사상적으로 불교의 핵심을 가장 깊게 담고 있다는 평가를 받고
-                있다.</p>
+    <div class="mycards" id="card-box">
+        <div class="card" style="width: 18rem;">
+            <img src="{{ detailPark.p_img }}">
+            <h4 class="card-title">{{ detailPark.p_park }}</h4>
+            <h5 class="card-subtitle">{{ detailPark.p_addr }}</h5>
+            <p class="card-text" style="margin-top: 10px">{{ detailPark.main_equip }}</p>
         </div>
     </div>
+
     <div id="map"></div>
 
-    </div>
+
+</div>
 </div>
 
 </body>

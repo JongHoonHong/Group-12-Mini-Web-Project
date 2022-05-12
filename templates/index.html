@@ -24,7 +24,7 @@
             font-family: 'Gowun Dodum', sans-serif;
         }
 
-        .sign-out{
+        .sign-out {
             float: right;
         }
 
@@ -86,67 +86,121 @@
 
             margin-top: 20px;
         }
+
         .mybtns > button {
             margin-right: 10px;
         }
     </style>
     <script>
         function sign_out() {
-                $.removeCookie('mytoken', {path: '/'});
-                alert('로그아웃!')
-                window.location.href = "/login"
-            }
+            $.removeCookie('mytoken', {path: '/'});
+            alert('로그아웃!')
+            window.location.href = "/login"
+        }
 
         $(document).ready(function () {
-            listing();
+            get_posts();
         });
 
-        function listing() {
+        function get_posts() {
             $('#cards-box').empty()
+
             $.ajax({
                 type: "GET",
-                url: "http://spartacodingclub.shop/web/api/movie",
+                url: "/get_park",
                 data: {},
-                success: function (response){
-                    let rows = response['movies']
-                    for (let i = 0; i < rows.length; i++){
-                        let title = rows[i]['title']
-                        let desc = rows[i]['desc']
-                        let image = rows[i]['image']
-                        let star = rows[i]['star']
-                        let comment = rows[i]['comment']
+                success: function (response) {
+                    console.log(response['posts'])
+                    let posts = response['posts']
+                    for (let i = 0; i < posts.length; i++) {
+                        let title = posts[i]['p_park']
+                        // let desc = posts[i]['main_equip']
+                        let parkGu = posts[i]['p_zone']
+                        let image = posts[i]['p_img']
+                        let parkAddr = posts[i]['p_addr']
 
-                        let star_image = '⭐'.repeat(star)
-
-                        let temp_html = `<div class="col">
+                        let temp_html = `<div class="col" onclick="location.href='/detail/${title}'">
                                             <div class="card">
                                                 <img src="${image}"
                                                      class="card-img-top" alt="...">
                                                 <div class="card-body">
                                                     <h5 class="card-title">${title}</h5>
-                                                    <p class="card-text">${desc}</p>
-                                                    <p>${star_image}</p>
-                                                    <p class="mycomment">${comment}</p>
+                                                    <p class="card-text">${parkGu}</p>
+                                                    <p class="mycomment">${parkAddr}</p>
                                                 </div>
                                             </div>
                                         </div>`
                         $('#cards-box').append(temp_html)
                     }
                 }
-            })
+            });
         }
+
+
+        // function get_posts() {
+        //     $.ajax({
+        //         type: "GET",
+        //         url: `/get_park`,
+        //         data: {},
+        //         success: function (response) {
+        //             let posts = response
+        //             for (let i = 0; i < posts.length; i++) {
+        //                 let post = posts[i]
+        //                 let html_temp = `<div class="card" id="${post["_id"]}" style="width: 20%; height: 20%; position: relative; float:left; margin: 5px;" >
+        //                               <div class="card-image">
+        //                                 <figure class="image is-4by3">
+        //                                   <img src="https://bulma.io/images/placeholders/1280x960.png" alt="Placeholder image">
+        //                                 </figure>
+        //                               </div>
+        //                               <div class="card-content">
+        //                                 <div class="media">
+        //                                   <div class="media-left">
+        //                                     <a class="image is-64x64" href="/user/${post['username']}">
+        //                                         <img class="is-rounded" src="/static/profile_pics/${post['profile_pic_real']}" alt="Image">
+        //                                     </a>
+        //                                   </div>
+        //                                   <div class="media-content">
+        //                                     <p class="title is-4">${post['profile_name']}</p>
+        //                                     <p class="subtitle is-6">@${post['username']}</p>
+        //                                   </div>
+        //                                 </div>
+        //                                 <div class="content">
+        //                                   ${post['comment']}
+        //                                   <br>
+        //                                   <time datetime="2016-1-1">${time_before}</time>
+        //                                 </div>
+        //                               </div>
+        //                             </div>`
+        //                 $("#post-box").append(html_temp)
+        //             }
+        //         }
+        //     });
+        // }
+
+        // 여러분 이게 겟파크 가져오는 기본 틀입니다 위의 펑션이랑 동일해요
+        //   function get_park() {
+        //     $.ajax({
+        //         type: 'GET',
+        //         url: '/get_park',
+        //         data: {},
+        //         success: function (response) {
+        //             alert(response['msg']);
+        //         }
+        //     });
+        // }
+
     </script>
 </head>
 
 <body>
-    <!-- 로그아웃 버튼-->
-    <button onclick="sign_out()" type="button" class="sign-out btn btn-light">sign out</button>
+<!-- 로그아웃 버튼-->
+<button onclick="sign_out()" type="button" class="sign-out btn btn-light">sign out</button>
 
-    <!-- 이름 + 카테고리-->
-    <div class="mytitle">
-        <h1>슬숲슬숲</h1>
-        <button a="/categorizing">지역 카테고리</button>
-    </div>
+<!-- 이름 + 카테고리-->
+<div class="mytitle">
+    <h1>슬숲슬숲</h1>
+    <button a="/categorizing">지역 카테고리</button>
+</div>
 
 <div class="mypost" id="post-box">
     <div class="form-floating mb-3">
