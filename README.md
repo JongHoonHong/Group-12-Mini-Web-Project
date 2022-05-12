@@ -48,6 +48,7 @@
 * 네이버 지도 API를 사용하여 상세페이제에서 해당 공원의 위치를 확인학 수 있게 구현했습니다.
 
 ##### JSON 파일 Mongodb 구축
+* 서울시에서 제공해주는 공원 JSON파일을 다운받아, Mongodb에 업로드 하였습니다.
 
 
 ##### 서브페이지 기능
@@ -57,13 +58,13 @@
 ------------
 
 # 4. 완성된 프로젝트
-[![Video Label](https://i.ytimg.com/an_webp/shvw-figPT0/mqdefault_6s.webp?du=3000&sqp=COrp8pMG&rs=AOn4CLB2OVjq2NAKaX1iJ6u9v1OVGtT8lw)](https://www.youtube.com/watch?v=shvw-figPT0)
+[![Video Label](https://i.ytimg.com/vi/shvw-figPT0/hqdefault.jpg?sqp=-oaymwEXCOADEI4CSFryq4qpAwkIARUAAIhCGAE=&rs=AOn4CLAIkv-LX0vIQvFZHj2s1LrT3o6VVw)](https://www.youtube.com/watch?v=shvw-figPT0)
 
 ------------
 
 # 5. 이슈 사항 
 
-* 서울시 공공데이터 공원현황 API를 JSON 파일로 다운받아 MongoDB에 import한 후 발생한 문제 처리 과정
+* 서울시 공공데이터 공원현황 API를 JSON 파일로 다운받아 MongoDB에 import한 후 오류가 발생하였습니다.
   *  Get요청을 할 때, 경로를 JSON파일이 저장된 Collection으로 지정했었는데 오류가 발생해서,  Jinja2템플릿 언어를 사용하여 새로운 경로를 지정해주고 데이터를 받아와서 사용할 수 있었습니다.
 
 * 서버에 연결후 로그인 페이지에서 회원가입은 되는데, 로그인을 시도하였을때 "Typeerror: Object of type bytes is not JSON serializable"라는 에러메세지와 함께 로그인 기능이 작동하지 않는 문제
