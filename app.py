@@ -23,7 +23,7 @@ client = MongoClient('mongodb+srv://test:sparta@cluster0.ovpfg.mongodb.net/Clust
 db = client.Group12
 
 
-@app.route('/')
+@app.route('/main')
 def home():
     token_receive = request.cookies.get('mytoken')
     try:
@@ -160,11 +160,16 @@ def get_park():
 #     # 성공 시 실행되는 메세지
 #     return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", 'posts': posts})
 
+
 @app.route("/detail/<title>")
 def detail(title):
     detailPark = db.park_info.find_one({"p_park":title}, {'_id': False})
     return render_template('detail.html', detailPark=detailPark)
+    return jsonify({"result": "success", "msg": "상세페이지입니다.", 'detailPark': detailPark})
 
+@app.route("/")
+def welcome():
+    return render_template('welcome.html')
 
 # try:
 #     # 포스팅 목록 받아오기

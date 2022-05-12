@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+    <!-- Webpage Title -->
+    <title>슬숲슬숲</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+    <!-- Font Awesome CSS -->
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <!--     글꼴 구글폰트   -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gothic+A1:wght@100;200&family=Hi+Melody&display=swap"
+          rel="stylesheet">
+
+    <script>
+    </script>
+
+    <style>
+        html {
+            object-fit: contain;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("/static/park_category.jpeg");
+            background-size: cover;
+            {#background-image: linear-gradient(25grad, rgba(64,128,128,1) 25%, rgba(0,0,0,0) 50%),url("/static/park_category.jpeg");#}
+        }
+
+        .welcome {
+            text-align: center;
+        }
+
+        .to-login-wrap {
+            text-align: center;
+            font-family: 'Do Hyeon', sans-serif;
+            margin-top: 20px;
+        }
+
+        #to-login-btn {
+            margin-top: 250px;
+            padding: 40px 20px;
+            font-size: 30px;
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+        .subtitle {
+            font-size: 2rem;
+            font-family: 'Do Hyeon', sans-serif;
+            color: rgb(127, 159, 139);
+            -webkit-text-stroke: 0.1px white;
+        }
+
+        .text-h1 {
+            font-family: 'Hi Melody', cursive;
+            color: white;
+            font-size: 180px;
+            -webkit-text-stroke: 5px rgb(154, 175, 161);
+        }
+{#rgb(74, 112, 87);#}
+{#         1px white;#}
+        .sentence {
+            width: 100%;
+            text-align: center;
+            margin-top: 200px;
+            margin-bottom: auto;
+            font-size: 45px;
+            letter-spacing: 4px;
+            color: lightgray;
+            font-family: 'Do Hyeon', sans-serif;
+        }
+
+    </style>
+
+</head>
+<body>
+<div class="welcome">
+    <h1 class="text-h1">슬 숲 슬 숲</h1>
+    <h3 class="subtitle is-sparta">슬리퍼 신고 나만의 숲으로 산책가자</h3>
+</div>
+
+<div class="sentence"><p>코딩하다 머리아프면</p>
+    <p>공원에 산책갈래?</p>
+</div>
+<div class="to-login-wrap">
+    <button id="to-login-btn" class="button is-rounded" onclick="location.href='/login'">
+        산책하러 가기
+    </button>
+</div>
+</body>
+</html>
