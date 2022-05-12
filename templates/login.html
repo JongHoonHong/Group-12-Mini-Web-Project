@@ -3,7 +3,7 @@
 <head>
 
     <!-- Webpage Title -->
-    <title>Log In | SWEETER</title>
+    <title>Log In | 슬숲슬숲</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -76,9 +76,32 @@
     </style>
 
     <script>
+        function sign_in() {
+            $.ajax({
+                type: "POST",
+                url: "/sign_in",
+                data: {
+                    username_give: "",
+                    password_give: ""
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        $.cookie('mytoken', response['token'], {path: '/'});
+
+                        alert('로그인 완료!')
+                        window.location.href = '/main'
+                    } else {
+                        // 로그인이 안되면 에러메시지를 띄웁니다.
+                        alert(response['msg'])
+                    }
+                }
+            })
+        }
         // {% if msg %}
             //     alert("{{ msg }}")
             // {% endif %}
+
+
         function sign_in() {
             let username = $("#input-username").val()
             let password = $("#input-password").val()
